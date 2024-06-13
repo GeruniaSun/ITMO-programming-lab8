@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="200.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PushController">
+        <Label fx:id="titleLabel" text="ERROR" textFill="#812103" AnchorPane.leftAnchor="40" AnchorPane.rightAnchor="40"
+               AnchorPane.topAnchor="30.0" />
+        <Label fx:id="messageLabel" text="PENISPENISPENISPENISPENISPENISPENISPENISPENISPENISPENISPENIS" wrapText="true"
+               AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="20.0"
+               AnchorPane.rightAnchor="20" AnchorPane.topAnchor="28.0"/>
+        <Button fx:id="okButton" prefWidth="100" text="OK" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="50.0">
+            <font>
+                <Font name="DejaVu Sans Bold" size="14.0" />
+            </font>
+        </Button>
+        <ImageView fx:id="image" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="40.0"
+                   AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="20.0" />
+</AnchorPane>

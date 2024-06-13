@@ -1,12 +1,12 @@
 package lt.shgg.data;
 
 /**
- * <h1>Класс строитель для создания экземпляров класса {@link data.Venue}</h1>
+ * <h1>Класс строитель для создания экземпляров класса {@link lt.shgg.data.Venue}</h1>
  * о шаблоне строитель можно прочитать в книге Джошуа Блоха "Effective Java"
  */
 public class VenueBuilder {
     /**
-     * Все поля (кроме static nextId) копии полей из класса {@link data.Venue}, с теми же ограничениями
+     * Все поля (кроме static nextId) копии полей из класса {@link lt.shgg.data.Venue}, с теми же ограничениями
      */
     private final int id;
     private String name;
@@ -43,6 +43,17 @@ public class VenueBuilder {
         this.capacity = capacity;
     }
 
+    public void withStringCapacity(String capacity) {
+        try {
+            Integer.parseInt(capacity);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("вместимость должна быть целым числом");
+        } catch (NullPointerException e) {
+            throw new NullPointerException("поле вместимость не может быть пустым");
+        }
+        this.withCapacity(Integer.parseInt(capacity));
+    }
+
     /**
      * Мутатор для задания значения поля address
      * @param address значение для поля address
@@ -52,7 +63,7 @@ public class VenueBuilder {
     }
 
     /**
-     * Метод создающий новый билет вызывая конструктор в классе {@link data.Venue}
+     * Метод создающий новый билет вызывая конструктор в классе {@link lt.shgg.data.Venue}
      * @return новенькое и полностью определенное место проведения
      */
     public Venue build(){

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.util.converter.NumberStringConverter?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.collections.FXCollections?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ui.AddController"
+      prefHeight="500" prefWidth="400.0"
+      spacing="20">
+    <padding>
+        <Insets bottom="50" left="10" right="10" top="30"/>
+    </padding>
+    <Label text="I WANNA DIE" fx:id="label"/>
+    <TextField fx:id="nameField" promptText="enter name" />
+    <TextField fx:id="xField" promptText="enter coordinate X" />
+    <TextField fx:id="yField" promptText="enter coordinate y" />
+    <TextField fx:id="priceField" promptText="enter price" />
+    <ComboBox fx:id="typeField" promptText="choose type">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="BUDGETARY" />
+                <String fx:value="USUAL" />
+                <String fx:value="CHEAP" />
+                <String fx:value="VIP" />
+            </FXCollections>
+        </items>
+    </ComboBox>
+    <TextField fx:id="venueNameField" promptText="enter venue name" />
+    <TextField fx:id="venueCapacityField" promptText="enter venue capacity" />
+    <TextField fx:id="venueAddressField" promptText="enter venue address" />
+    <HBox spacing="170">
+        <padding>
+            <Insets bottom="50" left="10" right="10" top="30"/>
+        </padding>
+        <Button text="Cancel" onAction="#cancelButtonOnClick"/>
+        <Button text="OK" onAction="#readTicket"/>
+    </HBox>
+
+
+</VBox>

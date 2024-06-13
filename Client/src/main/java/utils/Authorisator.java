@@ -1,3 +1,5 @@
+package utils;
+
 import lt.shgg.data.User;
 import lt.shgg.database.DatabaseManager;
 import lt.shgg.database.PasswordHasher;
@@ -11,6 +13,26 @@ public class Authorisator {
                 "Введите YES, если у вас уже есть аккаунт, и что-угодно в противном случае: ");
         if (in.nextLine().equalsIgnoreCase("YES")) return enter();
         else return registration();
+    }
+
+    public static User loginCheck(String login){
+        var databaseManager = new DatabaseManager();
+        if (databaseManager.findUser(login).isEmpty()){
+            return null;
+        } else return new User(login, databaseManager.findUser(login));
+    }
+
+    public static Boolean passwordCheck(String input, String password){
+        return password.equals(PasswordHasher.passwordHash(input));
+    }
+
+    public static Boolean passwordCheck(String password){
+        return  password != null && password.length() >= 4;
+    }
+
+    public static void saveUser(User user){
+        var databaseManager = new DatabaseManager();
+        databaseManager.addUser(user);
     }
 
     private static User registration(){

@@ -70,6 +70,26 @@ public class TicketBuilder {
         if (coordinates == null) throw new NullPointerException("это поле не может быть пустым");
         this.coordinates = coordinates;
     }
+    /**
+     * Мутатор для задания значения поля coordinates когда аргументы это 2 строки
+     */
+    public void withStringCoordinates(String x, String y) {
+        try {
+            Float.parseFloat(x);
+        } catch (IllegalArgumentException e) {
+            throw new NumberFormatException("абсцисса должна быть числом с плавающей точкой");
+        } catch (NullPointerException e) {
+            throw new NullPointerException("поле абсциссы не может быть пустым");
+        }
+        try {
+            Integer.parseInt(y);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("ордината должна быть  целым числом");
+        } catch (NullPointerException e) {
+            throw new NullPointerException("поле ординаты не может быть пустым");
+        }
+        this.withCoordinates(new Coordinates(Float.parseFloat(x), Integer.parseInt(y)));
+    }
 
     /**
      * Мутатор для задания значения поля price
@@ -78,6 +98,17 @@ public class TicketBuilder {
     public void withPrice(Long price) {
         if (price == null || price <= 0) throw new IllegalArgumentException("цена должна быть положительной");
         this.price = price;
+    }
+
+    public void withStringPrice(String price) {
+        try {
+            Long.parseLong(price);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("цена должна быть  целым числом");
+        } catch (NullPointerException e) {
+            throw new NullPointerException("поле цена не может быть пустым");
+        }
+        this.withPrice(Long.parseLong(price));
     }
     /**
      * Мутатор для задания значения поля type

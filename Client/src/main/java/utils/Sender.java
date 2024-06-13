@@ -1,3 +1,5 @@
+package utils;
+
 import lt.shgg.network.Request;
 import lt.shgg.network.Response;
 
@@ -43,7 +45,6 @@ public class Sender {
             } catch (IOException ignored) {
                 reconnectionAttempts++;
                 if(reconnectionAttempts >= maxReconnectionAttempts){
-                    ignored.printStackTrace();
                     break;
                 }
                 System.err.println("Повторная попытка через " + reconnectionTimeout / 1000 + " секунд");

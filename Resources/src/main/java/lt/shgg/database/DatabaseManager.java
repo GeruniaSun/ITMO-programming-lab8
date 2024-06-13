@@ -21,18 +21,23 @@ public class DatabaseManager {
     public static Connection connect(){
         try{
             Class.forName("org.postgresql.Driver");
-            Properties properties = new Properties();
-            properties.load(new FileInputStream(propPath));
+//            Properties properties = new Properties();
+//            properties.load(new FileInputStream(propPath));
+//            return DriverManager.getConnection(
+//                    properties.getProperty("address"),
+//                    properties.getProperty("username"),
+//                    properties.getProperty("password"));
             return DriverManager.getConnection(
-                    properties.getProperty("address"),
-                    properties.getProperty("username"),
-                    properties.getProperty("password"));
+                    "jdbc:postgresql://localhost:5432/postgres",
+                    "postgres",
+                    "rhbc1995");
         } catch (ClassNotFoundException | SQLException e){
             System.out.println("Ошибка при подключении к базе данных: {}" + e.getMessage());
-        } catch (IOException e) {
-            System.out.println("Не найден файл конфигурации, программист петух");
-            throw new RuntimeException(e);
         }
+//        catch (IOException e) {
+//            System.out.println("Не найден файл конфигурации, программист петух");
+//            throw new RuntimeException(e);
+//        }
         return null;
     }
 
