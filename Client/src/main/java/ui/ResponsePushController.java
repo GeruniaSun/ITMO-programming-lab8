@@ -4,11 +4,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 import lt.shgg.network.Response;
 
 import java.util.Locale;
 
-public class ResponsePushController {
+public class ResponsePushController implements Controller{
+    private Stage stage;
     @FXML
     public Label titleLabel;
     @FXML
@@ -18,11 +20,21 @@ public class ResponsePushController {
 
     @FXML
     private void okButtonOnClick() {
-        WindowLoader.getInstance().closeWindow(WindowEnum.RESPONSE_WINDOW);
+        stage.close();
     }
 
     public void writeResponse(Response response, Locale locale){
-        WindowLoader.getInstance().showWindow(WindowEnum.RESPONSE_WINDOW);
         messageLabel.setText(response.getResult());
+        stage.showAndWait();
+    }
+
+    @Override
+    public Stage getStage() {
+        return stage;
+    }
+
+    @Override
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 }

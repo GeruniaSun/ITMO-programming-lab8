@@ -4,41 +4,43 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import lt.shgg.commands.*;
 import lt.shgg.data.Ticket;
 import lt.shgg.database.DatabaseParser;
 import lt.shgg.network.Request;
 import utils.Authorisator;
+import utils.ScriptRunner;
 import utils.Sender;
 
+import java.io.FileNotFoundException;
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 
-public class MainPageController {
+public class MainPageController implements Controller{
+    @FXML
+    private ComboBox<String> typeFilter;
     @FXML
     private TableView<Ticket> table;
     @FXML
     private Label userLabel;
 
-    private Sender sender = new Sender("localhost", 1488, 5000, 7);
+    private Stage stage;
+
+    private final Sender sender = new Sender("localhost", 1488, 5000, 7);
     private ObservableList<Ticket> data = FXCollections.observableList(new DatabaseParser().load().stream().toList());
 
-    private final ResponsePushController responsePushController = new ResponsePushController();
-    private final ErrorPushController errorPushController = new ErrorPushController();
-    private final AddController addController = new AddController();
     public static Ticket currTicket;
+    public static Object args;
     private Locale locale = new Locale("ru");
-
-    @FXML
-    private Button exitButton;
-    @FXML
-    private Button helpButton;
-    @FXML
-    private Button langButton;
 
     @FXML
     private TableColumn<Ticket, Long> idColumn;
@@ -62,6 +64,8 @@ public class MainPageController {
     private TableColumn<Ticket, String> addressColumn;
     @FXML
     private TableColumn<Ticket, String> authorColumn;
+    @FXML
+    private ComboBox<String> sortBox;
 
     @FXML
     public void initialize(){
@@ -74,40 +78,117 @@ public class MainPageController {
     }
 
     @FXML
-    public void help() {}
+    public void visualization(){
+        var windowLoader = WindowLoader.getInstance();
+        var visualizationController = (VisualizationController) windowLoader.getWindow(WindowEnum.VISUALIZATION_WINDOW);
+        visualizationController.visualise();
+    }
+
+    @FXML
+    public void help() {
+        // TODO можно поменять на ресурс
+        processCommand(new Help());
+    }
 
     @FXML
     public void add(){
-        addController.show();
-        processCommand(new Add(), null);
+        showAdder();
+        processCommand(new Add());
         refreshTables();
     }
 
     @FXML
     public void addIfMax(){
-        addController.show();
-        processCommand(new AddIfMax(), null);
+        showAdder();
+        processCommand(new AddIfMax());
         refreshTables();
     }
 
     @FXML
     public void clear(){
-        processCommand(new Clear(), null);
+        processCommand(new Clear());
         refreshTables();
     }
 
     @FXML
     public void removeGreater(){
-        addController.show();
-        processCommand(new RemoveGreater(), null);
+        showAdder();
+        processCommand(new RemoveGreater());
         refreshTables();
     }
 
     @FXML
     public void removeLower(){
-        addController.show();
-        processCommand(new RemoveLower(), null);
+        showAdder();
+        processCommand(new RemoveLower());
         refreshTables();
+    }
+
+    @FXML
+    public void info(){
+        processCommand(new Info());
+    }
+
+    @FXML
+    public void countGreaterThanType(){
+        var windowLoader = WindowLoader.getInstance();
+        var argumentReceiverController = (ArgumentReceiverController)
+                windowLoader.getWindow(WindowEnum.ARGUMENT_RECEIVER_WINDOW);
+        argumentReceiverController.show(locale);
+        processCommand(new CountGreaterThanType());
+    }
+
+    @FXML
+    public void executeScript(){
+        var windowLoader = WindowLoader.getInstance();
+        var argumentReceiverController = (ArgumentReceiverController)
+                windowLoader.getWindow(WindowEnum.ARGUMENT_RECEIVER_WINDOW);
+        argumentReceiverController.show(locale);
+        var runner = new ScriptRunner();
+        try {
+            runner.runScript(args.toString(), Authorisator.getUser());
+        } catch (AccessDeniedException | FileNotFoundException e) {
+            var errorPushController = (ErrorPushController) windowLoader.getWindow(WindowEnum.ERROR_WINDOW);
+            errorPushController.writeError(e, locale);
+        }
+        refreshTables();
+    }
+
+    @FXML
+    public void filterByType(){
+        if(typeFilter.getValue().equals("NONE"))
+            initializeTables(FXCollections.observableList(new DatabaseParser().load().stream().toList()));
+        else {
+            var type = Ticket.TicketType.valueOf(typeFilter.getValue());
+            var tickets = new DatabaseParser().load().stream()
+                .filter(ticket -> ticket.getType().equals(type)).toList();
+            initializeTables(FXCollections.observableList(tickets));
+        }
+    }
+
+    @FXML
+    private void sort(){
+        var column = sortBox.getValue();
+        var data = new DatabaseParser().load().stream().toList();
+        switch (column) {
+            case "ID" -> initializeTables(FXCollections.observableList(
+            data.stream().sorted(Comparator.comparingLong(Ticket::getId)).toList()));
+            case "name" -> initializeTables(FXCollections.observableList(
+                    data.stream().sorted(Comparator.comparing(Ticket::getName)).toList()));
+            case "X" -> initializeTables(FXCollections.observableList(data.stream().sorted((t1, t2) ->
+                            Float.compare(t1.getCoordinates().getX(), t2.getCoordinates().getX())).toList()));
+            case "Y" -> initializeTables(FXCollections.observableList(data.stream().sorted(
+                    Comparator.comparingInt(t -> t.getCoordinates().getY())).toList()));
+            case "date" -> initializeTables(FXCollections.observableList(
+                    data.stream().sorted(Comparator.comparing(Ticket::getCreationDate)).toList()));
+            case "price" -> initializeTables(FXCollections.observableList(
+                    data.stream().sorted(Comparator.comparingLong(Ticket::getPrice)).toList()));
+            case "capacity" -> initializeTables(FXCollections.observableList(
+                    data.stream().sorted(Comparator.comparingInt(t -> t.getVenue().getCapacity())).toList()));
+            case "author" -> initializeTables(FXCollections.observableList(
+                    data.stream().sorted(Comparator.comparing(Ticket::getAuthor)).toList()));
+            default -> initializeTables(FXCollections.observableList(data));
+        }
     }
 
     private void initializeTables(ObservableList<Ticket> list) {
@@ -140,26 +221,47 @@ public class MainPageController {
         table.setItems(list);
     }
 
-    private void processCommand(Command command, Object args){
+    private void processCommand(Command command){
         var request = new Request();
+        var windowLoader = WindowLoader.getInstance();
         request.setCommand(command);
         request.setTicket(currTicket);
         request.setArgs(args);
         request.setUser(Authorisator.getUser());
+        args = null;
+        currTicket = null;
         try {
+            var responsePushController = (ResponsePushController) windowLoader.getWindow(WindowEnum.RESPONSE_WINDOW);
             responsePushController.writeResponse(sender.sendRequest(request), locale);
         } catch (InterruptedException e) {
+            var errorPushController = (ErrorPushController) windowLoader.getWindow(WindowEnum.ERROR_WINDOW);
             errorPushController.writeError(e, locale);
         }
     }
 
     @FXML
     public void setUserLabel() {
-        userLabel.setText(Authorisator.getUser().getLogin());
+        userLabel.setText(Authorisator.user.getLogin());
     }
 
     private void refreshTables(){
         data = FXCollections.observableList(new DatabaseParser().load().stream().toList());
         initializeTables(data);
+    }
+
+    @Override
+    public Stage getStage() {
+        return stage;
+    }
+
+    @Override
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    private void showAdder(){
+        var windowLoader = WindowLoader.getInstance();
+        var addController = (AddController) windowLoader.getWindow(WindowEnum.ADD_WINDOW);
+        addController.show();
     }
 }

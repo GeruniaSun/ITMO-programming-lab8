@@ -10,17 +10,12 @@
            AnchorPane.leftAnchor="225" AnchorPane.topAnchor="35.0" />
     <Label fx:id="messageLabel" text="CLICK ON THE PICTURE >>>"
            wrapText="true" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="20.0"
-           AnchorPane.rightAnchor="100" AnchorPane.topAnchor="50.0" />
+           AnchorPane.rightAnchor="180" AnchorPane.topAnchor="50.0" />
     <Button fx:id="okButton" prefWidth="100" text="OK" onAction="#okButtonOnClick"
             AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="200.0">
     </Button>
-    <Button AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="50.0"
-            onAction="#showText">
-        <graphic>
-            <ImageView pickOnBounds="true" preserveRatio="true" >
-                <Image requestedHeight="150" requestedWidth="150" url="@images/info_icon.png"/>
-            </ImageView>
-        </graphic>
-    </Button>
-    }
+    <ImageView pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="50.0"
+               AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="50.0">
+        <Image requestedHeight="150" requestedWidth="150" url="@images/info_icon.png" />
+    </ImageView>
 </AnchorPane>

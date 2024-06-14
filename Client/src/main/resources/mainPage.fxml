@@ -6,6 +6,8 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <AnchorPane minHeight="800.0" minWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.14-internal"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainPageController">
     <HBox alignment="CENTER" spacing="40" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="10">
@@ -13,34 +15,44 @@
             <Insets bottom="10" left="10" right="10" />
         </padding>
         <Label fx:id="userLabel" alignment="BASELINE_RIGHT" text="CLICK! ->" />
-        <Button onAction="#setUserLabel">
-            <graphic>
-                <ImageView>
-                    <Image requestedHeight="105" requestedWidth="140" url="@images/main_image.png" />
-                </ImageView>
-            </graphic>
-        </Button>
+        <ImageView>
+            <Image requestedHeight="105" requestedWidth="140" url="@images/main_image.png" />
+        </ImageView>
     </HBox>
     <HBox alignment="CENTER" spacing="40" AnchorPane.leftAnchor="20" AnchorPane.topAnchor="20">
         <padding>
             <Insets bottom="30" left="30" right="10" top="10" />
         </padding>
-        <Button text="Exit" fx:id="exitButton" onAction="#exitButtonOnClick"/>
-        <Button text="Visualization" />
-        <Button text="Language" fx:id="langButton">
+        <Button text="Exit" onAction="#exitButtonOnClick"/>
+        <Button text="Visualization" onAction="#visualization"/>
+        <Button text="Language" >
             <graphic>
                 <ImageView>
                     <Image requestedHeight="48" requestedWidth="48" url="@images/langIcon.png" />
                 </ImageView>
             </graphic>
         </Button>
-        <Button text="help" fx:id="helpButton" onAction="#help">
+        <Button text="help" onAction="#help">
             <graphic>
                 <ImageView>
                     <Image requestedHeight="48" requestedWidth="48" url="@images/questionIcon.png" />
                 </ImageView>
             </graphic>
         </Button>
+        <ComboBox fx:id="sortBox" promptText="sort column" onAction="#sort">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="ID"/>
+                    <String fx:value="name" />
+                    <String fx:value="X" />
+                    <String fx:value="Y" />
+                    <String fx:value="date" />
+                    <String fx:value="price" />
+                    <String fx:value="capacity" />
+                    <String fx:value="author" />
+                </FXCollections>
+            </items>
+        </ComboBox>
     </HBox>
     <TableView fx:id="table" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="20"
                AnchorPane.rightAnchor="180" AnchorPane.topAnchor="120">
@@ -66,12 +78,21 @@
         <Button text="Add" onAction="#add"/>
         <Button text="Add if max" onAction="#addIfMax"/>
         <Button text="Clear" onAction="#clear"/>
-        <Button text="Count greater than type" />
-        <Button text="Execute script" />
-        <Button text="Info" />
-        <Button text="Remove by id???" />
+        <Button text="Count greater than type" onAction="#countGreaterThanType"/>
+        <Button text="Execute script" onAction="#executeScript"/>
+        <Button text="Info" onAction="#info"/>
         <Button text="Remove greater" onAction="#removeGreater"/>
         <Button text="Remove lower" onAction="#removeLower"/>
-        <Button text="Update???" />
+        <ComboBox fx:id="typeFilter" promptText="choose filter type" onAction="#filterByType">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="NONE"/>
+                    <String fx:value="BUDGETARY" />
+                    <String fx:value="USUAL" />
+                    <String fx:value="CHEAP" />
+                    <String fx:value="VIP" />
+                </FXCollections>
+            </items>
+        </ComboBox>
     </VBox>
 </AnchorPane>

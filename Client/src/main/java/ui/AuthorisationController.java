@@ -1,26 +1,22 @@
 package ui;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
 import javafx.animation.TranslateTransition;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import lt.shgg.data.User;
-import lt.shgg.database.DatabaseManager;
 import utils.Authorisator;
 
-import java.util.ListResourceBundle;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class AuthorisationController {
+public class AuthorisationController implements Controller{
+    private Stage stage;
     @FXML
     private Label welcomeLabel;
     @FXML
@@ -49,6 +45,8 @@ public class AuthorisationController {
                 Authorisator.user = new User(login, password);
                 var windowLoader = WindowLoader.getInstance();
                 windowLoader.closeWindow(WindowEnum.AUTH_WINDOW);
+                var mainPageController = (MainPageController) windowLoader.getWindow(WindowEnum.MAIN_WINDOW);
+                mainPageController.setUserLabel();
                 windowLoader.showWindow(WindowEnum.MAIN_WINDOW);
             }
             else startWrongInputAnimation(passwordField, invalidPasswordMessage);
@@ -71,6 +69,8 @@ public class AuthorisationController {
                 Authorisator.user = new User(login, password);
                 var windowLoader = WindowLoader.getInstance();
                 windowLoader.closeWindow(WindowEnum.AUTH_WINDOW);
+                var mainPageController = (MainPageController) windowLoader.getWindow(WindowEnum.MAIN_WINDOW);
+                mainPageController.setUserLabel();
                 windowLoader.showWindow(WindowEnum.MAIN_WINDOW);
             } else startWrongInputAnimation(passwordField, wrongPasswordMessage);
         }
@@ -132,5 +132,15 @@ public class AuthorisationController {
         wrongPasswordMessage = resources.getString("wrong_password_message");
         userExistsMessage = resources.getString("user_exists_message");
         userNoExistsMessage = resources.getString("user_no_exists_message");
+    }
+
+    @Override
+    public Stage getStage() {
+        return stage;
+    }
+
+    @Override
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 }

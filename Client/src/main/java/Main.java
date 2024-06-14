@@ -1,5 +1,6 @@
 import lt.shgg.data.User;
 import utils.Authorisator;
+import utils.ClientConsole;
 import utils.Sender;
 
 import java.io.InputStreamReader;

@@ -29,17 +29,12 @@ public class Help implements Command, Serializable {
     {
         commands.add(this);
         commands.add(new Info());
-        commands.add(new Show());
         commands.add(new Add());
-        commands.add(new PrintDescending());
-        commands.add(new FilterByType());
         commands.add(new CountGreaterThanType());
         commands.add(new Clear());
-        commands.add(new RemoveById());
         commands.add(new RemoveGreater());
         commands.add(new RemoveLower());
         commands.add(new AddIfMax());
-        commands.add(new Update());
         commands.add(new Exit());
         commands.add(new ExecuteScript());
     }

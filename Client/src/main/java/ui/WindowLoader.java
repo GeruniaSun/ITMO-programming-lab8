@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class WindowLoader {
 
-    private static final HashMap<WindowEnum, Stage> windowMap = new HashMap<>();
+    private static final HashMap<WindowEnum, Controller> windowMap = new HashMap<>();
 
     private final static WindowLoader WINDOW_LOADER = new WindowLoader();
 
@@ -25,31 +25,31 @@ public class WindowLoader {
         URL addURL = WindowLoader.class.getResource("/addForm.fxml");
         URL errURL = WindowLoader.class.getResource("/errorPush.fxml");
         URL respURL = WindowLoader.class.getResource("/responsePush.fxml");
+        URL argsURL = WindowLoader.class.getResource("/argReceiver.fxml");
+        URL visURL = WindowLoader.class.getResource("/visualization.fxml");
 
         configureStage(mainURL, 800, 1200, WindowEnum.MAIN_WINDOW);
         configureStage(authURL, 250, 300, WindowEnum.AUTH_WINDOW);
         configureStage(addURL, 500, 300, WindowEnum.ADD_WINDOW);
         configureStage(errURL, 200, 600, WindowEnum.ERROR_WINDOW);
         configureStage(respURL, 200, 600, WindowEnum.RESPONSE_WINDOW);
-
-//        windowMap.get(WindowEnum.ADD_WINDOW).setOnHidden(ae -> {
-//            new AddController().clear();
-//        });
+        configureStage(argsURL, 40, 200, WindowEnum.ARGUMENT_RECEIVER_WINDOW);
+        configureStage(visURL, 400, 600, WindowEnum.VISUALIZATION_WINDOW);
     }
 
     public void showWindow(WindowEnum windowType){
-        windowMap.get(windowType).show();
+        windowMap.get(windowType).getStage().show();
     }
 
     public void showAndWaitWindow(WindowEnum windowType){
-        windowMap.get(windowType).showAndWait();
+        windowMap.get(windowType).getStage().showAndWait();
     }
 
     public void closeWindow(WindowEnum windowType){
-        windowMap.get(windowType).close();
+        windowMap.get(windowType).getStage().close();
     }
 
-    public Stage getWindow(WindowEnum windowType){
+    public Controller getWindow(WindowEnum windowType){
         return windowMap.get(windowType);
     }
 
@@ -62,8 +62,9 @@ public class WindowLoader {
         stage.setMinHeight(height);
         stage.setMinWidth(width);
         stage.setResizable(false);
-        //var window = loader.getController();
-        windowMap.put(stageType, stage);
+        Controller window = loader.getController();
+        window.setStage(stage);
+        windowMap.put(stageType, window);
     }
 
     private static Parent loadFxml(FXMLLoader loader) {
@@ -72,9 +73,9 @@ public class WindowLoader {
         } catch (IOException e) {
             System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             System.out.println("Не удалось загрузить окно: " + loader.getLocation() +
-                            "\nиз-за ошибки " + e.getMessage());
+                            "\nиз-за ошибки " + e.getMessage() +
+                            "по причине: " + e.getCause());
             return null;
-            //throw new RuntimeException(e);
         }
     }
 }

@@ -4,10 +4,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import lt.shgg.data.*;
 import utils.Authorisator;
 
-public class AddController {
+public class AddController implements Controller{
+    private Stage stage;
     @FXML
     private Label label;
     @FXML
@@ -34,12 +36,24 @@ public class AddController {
 
     @FXML
     private void cancelButtonOnClick(){
-        clear();
-        WindowLoader.getInstance().closeWindow(WindowEnum.ADD_WINDOW);
+        //WindowLoader.getInstance().closeWindow(WindowEnum.ADD_WINDOW);
+        stage.close();
     }
 
     public void show(){
-        WindowLoader.getInstance().showAndWaitWindow(WindowEnum.ADD_WINDOW);
+        clear();
+        stage.showAndWait();
+    }
+
+    public void fill(Ticket ticket){
+        nameField.setText(ticket.getName());
+        xField.setText(String.valueOf(ticket.getCoordinates().getX()));
+        yField.setText(String.valueOf(ticket.getCoordinates().getY()));
+        priceField.setText(String.valueOf(ticket.getPrice()));
+        typeField.setValue(String.valueOf(ticket.getType()));
+        venueNameField.setText(ticket.getVenue().getName());
+        venueCapacityField.setText(String.valueOf(ticket.getVenue().getCapacity()));
+        venueAddressField.setText(ticket.getVenue().getAddress().getStreet());
     }
 
     @FXML
@@ -86,5 +100,15 @@ public class AddController {
         venueNameField.clear();
         venueCapacityField.clear();
         venueAddressField.clear();
+    }
+
+    @Override
+    public Stage getStage() {
+        return stage;
+    }
+
+    @Override
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 }

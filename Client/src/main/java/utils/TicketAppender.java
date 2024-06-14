@@ -1,3 +1,5 @@
+package utils;
+
 import lt.shgg.data.*;
 
 import java.time.LocalDate;

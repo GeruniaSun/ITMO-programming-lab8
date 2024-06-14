@@ -1,5 +1,6 @@
+package utils;
+
 import lt.shgg.data.User;
-import utils.Sender;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

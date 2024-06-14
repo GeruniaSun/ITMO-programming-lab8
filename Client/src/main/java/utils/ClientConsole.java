@@ -1,7 +1,8 @@
+package utils;
+
 import lt.shgg.commands.*;
 import lt.shgg.data.User;
 import lt.shgg.network.Request;
-import utils.Sender;
 
 import java.io.InputStreamReader;
 import java.util.*;

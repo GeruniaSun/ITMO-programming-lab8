@@ -4,10 +4,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 import java.util.Locale;
 
-public class ErrorPushController {
+public class ErrorPushController implements Controller{
+    private Stage stage;
     @FXML
     public Label titleLabel;
     @FXML
@@ -16,12 +18,22 @@ public class ErrorPushController {
     public Button okButton;
 
     @FXML
-    private void okButtonOnClick(ActionEvent actionEvent) {
-        WindowLoader.getInstance().closeWindow(WindowEnum.ERROR_WINDOW);
+    private void okButtonOnClick() {
+        stage.close();
     }
 
     public void writeError(Exception e, Locale locale){
-        WindowLoader.getInstance().showAndWaitWindow(WindowEnum.ERROR_WINDOW);
         messageLabel.setText(e.getMessage());
+        stage.showAndWait();
+    }
+
+    @Override
+    public Stage getStage() {
+        return stage;
+    }
+
+    @Override
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 }
