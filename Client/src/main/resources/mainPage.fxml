@@ -23,16 +23,19 @@
         <padding>
             <Insets bottom="30" left="30" right="10" top="10" />
         </padding>
-        <Button text="Exit" onAction="#exitButtonOnClick"/>
-        <Button text="Visualization" onAction="#visualization"/>
-        <Button text="Language" >
-            <graphic>
-                <ImageView>
-                    <Image requestedHeight="48" requestedWidth="48" url="@images/langIcon.png" />
-                </ImageView>
-            </graphic>
-        </Button>
-        <Button text="help" onAction="#help">
+        <Button fx:id="exitButton" text="Exit" onAction="#exitButtonOnClick"/>
+        <Button fx:id="visButton" text="Visualization" onAction="#visualization"/>
+        <ComboBox promptText="Language" onAction="#setLocale" fx:id="localeButton">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="ru"/>
+                    <String fx:value="tr" />
+                    <String fx:value="ca" />
+                    <String fx:value="es" />
+                </FXCollections>
+            </items>
+        </ComboBox>
+        <Button text="help" onAction="#help" fx:id="helpButton">
             <graphic>
                 <ImageView>
                     <Image requestedHeight="48" requestedWidth="48" url="@images/questionIcon.png" />
@@ -48,11 +51,30 @@
                     <String fx:value="Y" />
                     <String fx:value="date" />
                     <String fx:value="price" />
+                    <String fx:value="venue" />
                     <String fx:value="capacity" />
+                    <String fx:value="address" />
                     <String fx:value="author" />
                 </FXCollections>
             </items>
         </ComboBox>
+        <ComboBox fx:id="filterBox" promptText="filter column" onAction="#filter">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="ID"/>
+                    <String fx:value="name" />
+                    <String fx:value="X" />
+                    <String fx:value="Y" />
+                    <String fx:value="date" />
+                    <String fx:value="price" />
+                    <String fx:value="venue" />
+                    <String fx:value="capacity" />
+                    <String fx:value="address" />
+                    <String fx:value="author" />
+                </FXCollections>
+            </items>
+        </ComboBox>
+        <TextField fx:id="filterField" promptText="enter something"/>
     </HBox>
     <TableView fx:id="table" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="20"
                AnchorPane.rightAnchor="180" AnchorPane.topAnchor="120">

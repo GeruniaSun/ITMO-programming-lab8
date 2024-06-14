@@ -126,7 +126,11 @@ public class VisualizationController implements Controller{
         for (var id : infoMap.keySet()) {
             anchor.getChildren().add(infoMap.get(id));
         }
+        try {
         stage.showAndWait();
+        } catch (Exception e) {
+            stage.setAlwaysOnTop(true);
+        }
     }
 
     public void setLocale(Locale locale) {

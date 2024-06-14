@@ -285,3 +285,74 @@ update id {element} - обновляет поля элемента по его i
 exit - завершает работу приложения
 execute_script filename - выполняет команды из файла filename
 
+2024-06-14 12:42:43,700 INFO ServerLogger [main] Добро пожаловать на сервер шизофрения
+2024-06-14 12:42:47,225 INFO ServerLogger [main] Получен запрос Request: command= lt.shgg.commands.Help@5f354bcfuser=lt.shgg.data.User@6050, ticket= null, args= null
+2024-06-14 12:42:47,236 INFO ServerLogger [main] Отправлен ответ вот список доступных вам команд: help - справка по доступным командам
+info - выводит информацию о коллекции
+show - выводит все элементы коллекции
+add - добавляет элемент в коллекцию
+print_descending - выводит все элементы коллекции в порядке убывания
+filter_by_type type - выводит все элементы коллекции типа type
+count_greater_than_type type - выводит количество элементов коллекции, значение поля type которых больше заданного
+clear - удаляет все элементы из коллекции
+remove_by_id id - удаляет из коллекции элемент с айди id
+remove_greater {element} - удаляет из коллекции все элементы, меньшие, чем заданный
+remove_lower {element} - удаляет из коллекции все элементы, большие, чем заданный
+add_if_max {element} - добавляет элемент в коллекцию, если он превышает максимальный
+update id {element} - обновляет поля элемента по его id
+exit - завершает работу приложения
+execute_script filename - выполняет команды из файла filename
+
+2024-06-14 12:46:07,564 INFO ServerLogger [main] Получен запрос Request: command= lt.shgg.commands.Add@291a7e3cuser=lt.shgg.data.User@6050, ticket= Ticket{id=9, name='1', coordinates=Coordinates{x=1.0, y=2}, creationDate=2024-06-14, price=2, type=BUDGETARY, venue=null, author=а}, args= null
+2024-06-14 12:46:07,677 INFO ServerLogger [main] Отправлен ответ элемент
+Ticket{id=40, name='1', coordinates=Coordinates{x=1.0, y=2}, creationDate=2024-06-14, price=2, type=BUDGETARY, venue=null, author=а}
+добавлен успешно
+2024-06-14 12:46:47,606 INFO ServerLogger [main] Получен запрос Request: command= lt.shgg.commands.CountGreaterThanType@265adfaduser=lt.shgg.data.User@6050, ticket= null, args= null
+2024-06-14 12:46:47,608 INFO ServerLogger [main] Отправлен ответ Случилась беда Команда count_greater_than_type не работает без аргумента type
+2024-06-14 13:06:59,218 INFO ServerLogger [main] Получен запрос Request: command= lt.shgg.commands.Add@4b41dd5cuser=lt.shgg.data.User@4c4d1c0, ticket= Ticket{id=15, name='qqq', coordinates=Coordinates{x=12.0, y=12}, creationDate=2024-06-14, price=154, type=BUDGETARY, venue=Venue{id=1, name='qasw', capacity=123, address=Address{street='hwwjh7878snjn'}}, author=qqqq}, args= null
+2024-06-14 13:06:59,363 INFO ServerLogger [main] Отправлен ответ элемент
+Ticket{id=41, name='qqq', coordinates=Coordinates{x=12.0, y=12}, creationDate=2024-06-14, price=154, type=BUDGETARY, venue=Venue{id=1, name='qasw', capacity=123, address=Address{street='hwwjh7878snjn'}}, author=qqqq}
+добавлен успешно
+2024-06-14 13:09:43,269 INFO ServerLogger [main] Получен запрос Request: command= lt.shgg.commands.Add@13ad5cd3user=lt.shgg.data.User@17904ce, ticket= Ticket{id=4, name='45', coordinates=Coordinates{x=100.0, y=100}, creationDate=2024-06-14, price=100, type=USUAL, venue=Venue{id=1, name='аап', capacity=100, address=Address{street='нгнгнг'}}, author=кен}, args= null
+2024-06-14 13:09:43,404 INFO ServerLogger [main] Отправлен ответ элемент
+Ticket{id=42, name='45', coordinates=Coordinates{x=100.0, y=100}, creationDate=2024-06-14, price=100, type=USUAL, venue=Venue{id=1, name='аап', capacity=100, address=Address{street='нгнгнг'}}, author=кен}
+добавлен успешно
+2024-06-14 13:11:18,402 INFO ServerLogger [main] Получен запрос Request: command= lt.shgg.commands.Info@1e097d59user=lt.shgg.data.User@17904ce, ticket= null, args= script1.txt
+2024-06-14 13:11:18,404 INFO ServerLogger [main] Отправлен ответ Случилась беда Команда info не принимает никаких аргументов
+2024-06-14 13:11:27,967 INFO ServerLogger [main] Получен запрос Request: command= lt.shgg.commands.RemoveGreater@6581dc0auser=lt.shgg.data.User@17904ce, ticket= null, args= null
+2024-06-14 13:11:28,005 INFO ServerLogger [main] Отправлен ответ Случилась беда Cannot invoke "lt.shgg.data.Ticket.getPrice()" because "ticket" is null
+2024-06-14 13:11:35,169 INFO ServerLogger [main] Получен запрос Request: command= lt.shgg.commands.RemoveGreater@6ce86ce1user=lt.shgg.data.User@17904ce, ticket= null, args= null
+2024-06-14 13:11:35,173 INFO ServerLogger [main] Отправлен ответ Случилась беда Cannot invoke "lt.shgg.data.Ticket.getPrice()" because "ticket" is null
+2024-06-14 13:12:05,602 INFO ServerLogger [main] Получен запрос Request: command= lt.shgg.commands.Help@3fed2870user=lt.shgg.data.User@17904ce, ticket= null, args= null
+2024-06-14 13:12:05,604 INFO ServerLogger [main] Отправлен ответ вот список доступных вам команд: help - справка по доступным командам
+info - выводит информацию о коллекции
+show - выводит все элементы коллекции
+add - добавляет элемент в коллекцию
+print_descending - выводит все элементы коллекции в порядке убывания
+filter_by_type type - выводит все элементы коллекции типа type
+count_greater_than_type type - выводит количество элементов коллекции, значение поля type которых больше заданного
+clear - удаляет все элементы из коллекции
+remove_by_id id - удаляет из коллекции элемент с айди id
+remove_greater {element} - удаляет из коллекции все элементы, меньшие, чем заданный
+remove_lower {element} - удаляет из коллекции все элементы, большие, чем заданный
+add_if_max {element} - добавляет элемент в коллекцию, если он превышает максимальный
+update id {element} - обновляет поля элемента по его id
+exit - завершает работу приложения
+execute_script filename - выполняет команды из файла filename
+
+2024-06-14 14:31:10,922 INFO ServerLogger [main] Получен запрос Request: command= lt.shgg.commands.Add@32c4e8b2user=lt.shgg.data.User@6050, ticket= Ticket{id=5, name='1', coordinates=Coordinates{x=1.0, y=11}, creationDate=2024-06-14, price=1, type=BUDGETARY, venue=null, author=а}, args= null
+2024-06-14 14:31:11,081 INFO ServerLogger [main] Отправлен ответ элемент
+Ticket{id=43, name='1', coordinates=Coordinates{x=1.0, y=11}, creationDate=2024-06-14, price=1, type=BUDGETARY, venue=null, author=а}
+добавлен успешно
+2024-06-14 14:36:03,045 INFO ServerLogger [main] Получен запрос Request: command= lt.shgg.commands.Help@4c1f22f3user=lt.shgg.data.User@6050, ticket= null, args= null
+2024-06-14 14:36:03,058 INFO ServerLogger [main] Отправлен ответ вот список доступных вам команд: help - справка по доступным командам
+info - выводит информацию о коллекции
+add - добавляет элемент в коллекцию
+count_greater_than_type type - выводит количество элементов коллекции, значение поля type которых больше заданного
+clear - удаляет все элементы из коллекции
+remove_greater {element} - удаляет из коллекции все элементы, меньшие, чем заданный
+remove_lower {element} - удаляет из коллекции все элементы, большие, чем заданный
+add_if_max {element} - добавляет элемент в коллекцию, если он превышает максимальный
+exit - завершает работу приложения
+execute_script filename - выполняет команды из файла filename
+

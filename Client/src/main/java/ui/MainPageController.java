@@ -4,14 +4,12 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import lt.shgg.commands.*;
 import lt.shgg.data.Ticket;
+import lt.shgg.data.Venue;
 import lt.shgg.database.DatabaseParser;
 import lt.shgg.network.Request;
 import utils.Authorisator;
@@ -24,8 +22,21 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class MainPageController implements Controller{
+    @FXML
+    private TextField filterField;
+    @FXML
+    private ComboBox<String> filterBox;
+    @FXML
+    private Button helpButton;
+    @FXML
+    private Button visButton;
+    @FXML
+    private Button exitButton;
+    @FXML
+    private ComboBox<String> localeButton;
     @FXML
     private ComboBox<String> typeFilter;
     @FXML
@@ -75,6 +86,12 @@ public class MainPageController implements Controller{
     @FXML
     public void exitButtonOnClick(){
         System.exit(0);
+    }
+
+    @FXML
+    public void setLocale(){
+        this.locale = new Locale(localeButton.getValue());
+        changeLanguage(locale);
     }
 
     @FXML
@@ -167,9 +184,41 @@ public class MainPageController implements Controller{
     }
 
     @FXML
+    private void filter(){
+        List<Ticket> data = new DatabaseParser().load().stream().toList();
+        var seq = filterField.getText();
+        switch (filterBox.getValue()) {
+            case "ID" -> initializeTables(FXCollections.observableList(
+                    data.stream().filter(ticket -> ticket.getId().toString().contains(seq)).toList()));
+            case "name" -> initializeTables(FXCollections.observableList(
+                    data.stream().filter(ticket -> ticket.getName().contains(seq)).toList()));
+            case "X" -> initializeTables(FXCollections.observableList(data.stream()
+                    .filter(ticket -> Float.toString(ticket.getCoordinates().getX()).contains(seq)).toList()));
+            case "Y" -> initializeTables(FXCollections.observableList(data.stream()
+                    .filter(ticket -> Integer.toString(ticket.getCoordinates().getY()).contains(seq)).toList()));
+            case "date" -> initializeTables(FXCollections.observableList(
+                    data.stream().filter(ticket -> ticket.getCreationDate().toString().contains(seq)).toList()));
+            case "price" -> initializeTables(FXCollections.observableList(
+                    data.stream().filter(ticket -> ticket.getPrice().toString().contains(seq)).toList()));
+            case "venue" -> initializeTables(FXCollections.observableList(
+                    data.stream().filter(ticket -> ticket.getVenue() != null &&
+                            ticket.getVenue().getName().contains(seq)).toList()));
+            case "capacity" -> initializeTables(FXCollections.observableList(
+                    data.stream().filter(ticket -> ticket.getVenue() != null &&
+                            Integer.toString(ticket.getVenue().getCapacity()).contains(seq)).toList()));
+            case "address" -> initializeTables(FXCollections.observableList(
+                    data.stream().filter(ticket -> ticket.getVenue() != null &&
+                            ticket.getVenue().getAddress() != null &&
+                            ticket.getVenue().getAddress().getStreet().contains(seq)).toList()));
+            case "author" -> initializeTables(FXCollections.observableList(
+                    data.stream().filter(ticket -> ticket.getAuthor().contains(seq)).toList()));
+        }
+    }
+
+    @FXML
     private void sort(){
         var column = sortBox.getValue();
-        var data = new DatabaseParser().load().stream().toList();
+        List<Ticket> data = new DatabaseParser().load().stream().toList();
         switch (column) {
             case "ID" -> initializeTables(FXCollections.observableList(
             data.stream().sorted(Comparator.comparingLong(Ticket::getId)).toList()));
@@ -183,13 +232,40 @@ public class MainPageController implements Controller{
                     data.stream().sorted(Comparator.comparing(Ticket::getCreationDate)).toList()));
             case "price" -> initializeTables(FXCollections.observableList(
                     data.stream().sorted(Comparator.comparingLong(Ticket::getPrice)).toList()));
+            case "venue" -> initializeTables(FXCollections.observableList(
+                    data.stream().sorted(
+                            Comparator.comparing(t -> t.getVenue().getName(), STRING_NULL_COMPARATOR)).toList()));
             case "capacity" -> initializeTables(FXCollections.observableList(
                     data.stream().sorted(Comparator.comparingInt(t -> t.getVenue().getCapacity())).toList()));
+            case "address" -> initializeTables(FXCollections.observableList(
+                    data.stream().sorted(
+                            Comparator.comparing(t -> t.getVenue().getAddress(),
+                            ADDRESS_NULL_COMPARATOR)).toList()));
             case "author" -> initializeTables(FXCollections.observableList(
                     data.stream().sorted(Comparator.comparing(Ticket::getAuthor)).toList()));
             default -> initializeTables(FXCollections.observableList(data));
         }
     }
+
+    private static final Comparator<String> STRING_NULL_COMPARATOR = (c1, c2) -> {
+        if (c1 != null && c2 == null) {
+            return 1;
+        }
+        if (c1 == null && c2 != null) {
+            return -1;
+        }
+        return 0;
+    };
+
+    private static final Comparator<Venue.Address> ADDRESS_NULL_COMPARATOR = (c1, c2) -> {
+        if (c1 != null && c2 == null) {
+            return 1;
+        }
+        if (c1 == null && c2 != null) {
+            return -1;
+        }
+        return 0;
+    };
 
     private void initializeTables(ObservableList<Ticket> list) {
         idColumn.setCellValueFactory(cellData ->
@@ -263,5 +339,23 @@ public class MainPageController implements Controller{
         var windowLoader = WindowLoader.getInstance();
         var addController = (AddController) windowLoader.getWindow(WindowEnum.ADD_WINDOW);
         addController.show();
+    }
+
+    private void changeLanguage(Locale locale){
+        var resources = ResourceBundle.getBundle("ui.l10n.MainLabels", locale);
+        exitButton.setText(resources.getString("exitButton"));
+        visButton.setText(resources.getString("visButton"));
+        localeButton.setPromptText(resources.getString("langButton"));
+        helpButton.setText(resources.getString("helpButton"));
+        sortBox.setPromptText(resources.getString("sortButton"));
+        typeFilter.setPromptText(resources.getString("filterButton"));
+        nameColumn.setText(resources.getString("nameCol"));
+        creationDateColumn.setText(resources.getString("dateCol"));
+        priceColumn.setText(resources.getString("priceCol"));
+        typeColumn.setText(resources.getString("typeCol"));
+        venueNameColumn.setText(resources.getString("venueCol"));
+        venueCapacityColumn.setText(resources.getString("capCol"));
+        addressColumn.setText(resources.getString("addressCol"));
+        authorColumn.setText(resources.getString("authorCol"));
     }
 }

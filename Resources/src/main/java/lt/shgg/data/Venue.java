@@ -79,7 +79,7 @@ public class Venue implements Serializable {
      * <h2>Класс описывающий сущность адреса места проведения</h2>
      * адрес - необязательное поля места проведения
      */
-    public static class Address implements Serializable {
+    public static class Address implements Serializable, Comparable<Address> {
         /**
          * Полное название улицы, единственное поле класса полностью определяющее экземпляр
          * это поле не может быть null, а длина строки не должна превышать 160 символов
@@ -144,6 +144,11 @@ public class Venue implements Serializable {
             return "Address{" +
                     "street='" + street + '\'' +
                     '}';
+        }
+
+        @Override
+        public int compareTo(Address other) {
+            return this.street.compareTo(other.street);
         }
     }
 
