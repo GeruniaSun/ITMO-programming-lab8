@@ -7,6 +7,8 @@ import lt.shgg.database.PasswordHasher;
 import java.util.Scanner;
 
 public class Authorisator {
+    public static User user;
+
     public static User authorise(){
         var in = new Scanner(System.in);
         System.out.println("Вы уже смешарик?\n" +
@@ -33,6 +35,10 @@ public class Authorisator {
     public static void saveUser(User user){
         var databaseManager = new DatabaseManager();
         databaseManager.addUser(user);
+    }
+
+    public static User getUser() {
+        return user;
     }
 
     private static User registration(){

@@ -4,36 +4,34 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.stage.Stage;
 import lt.shgg.commands.*;
 import lt.shgg.data.Ticket;
-import lt.shgg.data.User;
 import lt.shgg.database.DatabaseParser;
+import lt.shgg.network.Request;
+import utils.Authorisator;
 import utils.Sender;
 
-import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Locale;
 
 public class MainPageController {
     @FXML
     private TableView<Ticket> table;
     @FXML
     private Label userLabel;
-    private static String username;
 
     private Sender sender = new Sender("localhost", 1488, 5000, 7);
     private ObservableList<Ticket> data = FXCollections.observableList(new DatabaseParser().load().stream().toList());
 
+    private final ResponsePushController responsePushController = new ResponsePushController();
+    private final ErrorPushController errorPushController = new ErrorPushController();
     private final AddController addController = new AddController();
+    public static Ticket currTicket;
+    private Locale locale = new Locale("ru");
 
     @FXML
     private Button exitButton;
@@ -68,8 +66,6 @@ public class MainPageController {
     @FXML
     public void initialize(){
         initializeTables(data);
-        //TODO исправить
-        userLabel.setText("Я ТВОЮ МАМУ ЕБАЛ");
     }
 
     @FXML
@@ -78,13 +74,40 @@ public class MainPageController {
     }
 
     @FXML
-    public void help(){
-        PushManager.info("PENIS", "", new Locale("ru", "RU"));
-    }
+    public void help() {}
 
     @FXML
     public void add(){
         addController.show();
+        processCommand(new Add(), null);
+        refreshTables();
+    }
+
+    @FXML
+    public void addIfMax(){
+        addController.show();
+        processCommand(new AddIfMax(), null);
+        refreshTables();
+    }
+
+    @FXML
+    public void clear(){
+        processCommand(new Clear(), null);
+        refreshTables();
+    }
+
+    @FXML
+    public void removeGreater(){
+        addController.show();
+        processCommand(new RemoveGreater(), null);
+        refreshTables();
+    }
+
+    @FXML
+    public void removeLower(){
+        addController.show();
+        processCommand(new RemoveLower(), null);
+        refreshTables();
     }
 
     private void initializeTables(ObservableList<Ticket> list) {
@@ -117,8 +140,26 @@ public class MainPageController {
         table.setItems(list);
     }
 
-    public void setUsername(String input) {
-        username = input;
-        userLabel.setText(username);
+    private void processCommand(Command command, Object args){
+        var request = new Request();
+        request.setCommand(command);
+        request.setTicket(currTicket);
+        request.setArgs(args);
+        request.setUser(Authorisator.getUser());
+        try {
+            responsePushController.writeResponse(sender.sendRequest(request), locale);
+        } catch (InterruptedException e) {
+            errorPushController.writeError(e, locale);
+        }
+    }
+
+    @FXML
+    public void setUserLabel() {
+        userLabel.setText(Authorisator.getUser().getLogin());
+    }
+
+    private void refreshTables(){
+        data = FXCollections.observableList(new DatabaseParser().load().stream().toList());
+        initializeTables(data);
     }
 }

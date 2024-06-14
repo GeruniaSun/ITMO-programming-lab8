@@ -32,38 +32,39 @@ public class QueryDealer {
 
     final String clearCollection = """
             DELETE FROM Tickets
-            WHERE (user_login = ?)
+            WHERE (author = ?)
             RETURNING id;
             """;
 
     final String deleteObject = """
             DELETE FROM Tickets
-            WHERE (user_login = ?) AND (id = ?)
+            WHERE (author = ?) AND (id = ?)
             RETURNING id;
             """;
 
     final String removeLower = """
             DELETE FROM Tickets
-            WHERE (user_login = ?) AND (price < ?)
+            WHERE (author = ?) AND (price < ?)
             RETURNING id;
             """;
 
     final String removeGreater = """
             DELETE FROM Tickets
-            WHERE (user_login = ?) AND (price > ?)
+            WHERE (author = ?) AND (price > ?)
             RETURNING id;
             """;
 
     final String findMaxPrice = """
-            SELECT MAX(price)
-            FROM Ticket;
+            SELECT (price)
+            FROM Tickets
+            WHERE price = (SELECT MAX(price) FROM Tickets)
             """;
 
     final String updateObject = """
             UPDATE Tickets SET (name, coordinate_x, coordinate_y, price, type,
             venue_id, venue_name, capacity, address)
             = (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            WHERE (user_login = ?) AND (id = ?)
+            WHERE (author = ?) AND (id = ?)
             RETURNING id;
             """;
 

@@ -1,16 +1,11 @@
 package ui;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.util.converter.NumberStringConverter;
 import lt.shgg.data.*;
-
-import java.util.Optional;
+import utils.Authorisator;
 
 public class AddController {
     @FXML
@@ -48,10 +43,8 @@ public class AddController {
     }
 
     @FXML
-    private Optional<Ticket> readTicket() {
+    private void readTicket() {
         var builder = new TicketBuilder();
-        // TODO персонализированные ошибки в билдерах
-        // TODO сообщать юзернэйм сюда
         try {
             builder.withName(nameField.getText());
             builder.withStringCoordinates(xField.getText(), yField.getText());
@@ -65,23 +58,20 @@ public class AddController {
                     venueBuilder.withAddress(new Venue.Address(venueAddressField.getText()));
                 builder.withVenue(venueBuilder.build());
             }
-            builder.withAuthor("ТУТ ПЕНИС ИЛИ ЧТО");
-            return Optional.ofNullable(builder.build());
+            builder.withAuthor(Authorisator.getUser().getLogin());
+            MainPageController.currTicket = builder.build();
+            WindowLoader.getInstance().closeWindow(WindowEnum.ADD_WINDOW);
         } catch (NullPointerException | IllegalArgumentException e) {
             label.setText(e.getMessage());
-            return Optional.empty();
         }
     }
 
     private void makeFieldNumeric(TextField... fields){
         for(TextField field : fields) {
-            field.textProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                    if (!newValue.matches("-?\\d+\\.?\\d*")) {
-                        newValue = newValue.replaceAll("[^-\\d.]+", "");
-                        field.setText(newValue);
-                    }
+            field.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.matches("-?\\d+\\.?\\d*")) {
+                    newValue = newValue.replaceAll("[^-\\d.]+", "");
+                    field.setText(newValue);
                 }
             });
         }

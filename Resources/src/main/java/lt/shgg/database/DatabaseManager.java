@@ -86,7 +86,7 @@ public class DatabaseManager {
             ResultSet resultSet = update.executeQuery();
             return (resultSet.next());
         } catch (SQLException | NullPointerException e){
-            System.out.println("Ошибка при подключении/выполнении запроса");
+            System.out.println("Ошибка при подключении/выполнении запроса\n" + e.getMessage());
         }
         return false;
     }
@@ -98,7 +98,7 @@ public class DatabaseManager {
             ResultSet resultSet = remove.executeQuery();
             return resultSet.next();
         } catch (SQLException | NullPointerException e) {
-            System.out.println("Ошибка при подключении/выполнении запроса");
+            System.out.println("Ошибка при подключении/выполнении запроса:\n" + e.getMessage());
         }
         return false;
     }
@@ -132,10 +132,9 @@ public class DatabaseManager {
             resultSet.next();
             return resultSet.getLong("id");
         } catch (SQLException | NullPointerException e){
-            System.out.println("Ошибка при подключении/выполнении запроса");
+            System.out.println("Ошибка при подключении/выполнении запроса:\n" + e.getMessage());
             System.out.println(e.getMessage());
             System.out.println(e.getClass());
-            e.printStackTrace();
         }
         return -1;
     }
@@ -150,7 +149,7 @@ public class DatabaseManager {
             }
             return (ticket.getPrice() > maxPrice) ? addObject(ticket) : -2;
         } catch (SQLException | NullPointerException e){
-            System.out.println("Ошибка при подключении/выполнении запроса");
+            System.out.println("Ошибка при подключении/выполнении запроса:\n" + e.getMessage());
         }
         return -1;
     }
@@ -166,7 +165,7 @@ public class DatabaseManager {
                 ids.add(resultSet.getLong("id"));
             }
         } catch (SQLException | NullPointerException e){
-            System.out.println("Ошибка при подключении/выполнении запроса");
+            System.out.println("Ошибка при подключении/выполнении запроса:\n" + e.getMessage());
         }
         return ids;
     }
@@ -183,7 +182,7 @@ public class DatabaseManager {
                 ids.add(resultSet.getLong("id"));
             }
         } catch (SQLException | NullPointerException e){
-            System.out.println("Ошибка при подключении/выполнении запроса");
+            System.out.println("Ошибка при подключении/выполнении запроса:\n" + e.getMessage());
         }
         return ids;
     }
@@ -200,7 +199,7 @@ public class DatabaseManager {
                 ids.add(resultSet.getLong("id"));
             }
         } catch (SQLException | NullPointerException e){
-            System.out.println("Ошибка при подключении/выполнении запроса");
+            System.out.println("Ошибка при подключении/выполнении запроса\n" + e.getMessage());
         }
         return ids;
     }

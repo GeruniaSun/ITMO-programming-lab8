@@ -46,7 +46,7 @@ public class AuthorisationController {
             if (Authorisator.passwordCheck(password)) {
                 Authorisator.saveUser(new User(login, password));
                 welcomeLabel.setText("победа");
-                // TODO отдать login в добрые руки
+                Authorisator.user = new User(login, password);
                 var windowLoader = WindowLoader.getInstance();
                 windowLoader.closeWindow(WindowEnum.AUTH_WINDOW);
                 windowLoader.showWindow(WindowEnum.MAIN_WINDOW);
@@ -68,7 +68,7 @@ public class AuthorisationController {
         else {
             if (Authorisator.passwordCheck(password, user.getPassword())) {
                 welcomeLabel.setText("победа");
-                // TODO отдать login в добрые руки
+                Authorisator.user = new User(login, password);
                 var windowLoader = WindowLoader.getInstance();
                 windowLoader.closeWindow(WindowEnum.AUTH_WINDOW);
                 windowLoader.showWindow(WindowEnum.MAIN_WINDOW);

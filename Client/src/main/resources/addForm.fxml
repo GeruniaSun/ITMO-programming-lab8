@@ -35,7 +35,7 @@
     <TextField fx:id="venueNameField" promptText="enter venue name" />
     <TextField fx:id="venueCapacityField" promptText="enter venue capacity" />
     <TextField fx:id="venueAddressField" promptText="enter venue address" />
-    <HBox spacing="170">
+    <HBox spacing="270">
         <padding>
             <Insets bottom="50" left="10" right="10" top="30"/>
         </padding>

@@ -23,10 +23,14 @@ public class WindowLoader {
         URL mainURL = WindowLoader.class.getResource("/mainPage.fxml");
         URL authURL = WindowLoader.class.getResource("/authWindow.fxml");
         URL addURL = WindowLoader.class.getResource("/addForm.fxml");
+        URL errURL = WindowLoader.class.getResource("/errorPush.fxml");
+        URL respURL = WindowLoader.class.getResource("/responsePush.fxml");
 
         configureStage(mainURL, 800, 1200, WindowEnum.MAIN_WINDOW);
         configureStage(authURL, 250, 300, WindowEnum.AUTH_WINDOW);
         configureStage(addURL, 500, 300, WindowEnum.ADD_WINDOW);
+        configureStage(errURL, 200, 600, WindowEnum.ERROR_WINDOW);
+        configureStage(respURL, 200, 600, WindowEnum.RESPONSE_WINDOW);
 
 //        windowMap.get(WindowEnum.ADD_WINDOW).setOnHidden(ae -> {
 //            new AddController().clear();
@@ -58,6 +62,7 @@ public class WindowLoader {
         stage.setMinHeight(height);
         stage.setMinWidth(width);
         stage.setResizable(false);
+        //var window = loader.getController();
         windowMap.put(stageType, stage);
     }
 
